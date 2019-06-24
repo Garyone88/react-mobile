@@ -1,6 +1,10 @@
 import React, { Component, Fragment } from "react";
-import { NavBar, Icon, Carousel } from 'antd-mobile';
+import { NavBar, Icon, Carousel,Toast } from 'antd-mobile';
 import { getGoodsInfo } from '../api/index';
+
+
+import { cart_add } from "../store/actionCreator";
+import { connect } from "react-redux";
 class GoodsDetail extends Component {
     state = {
         imgHeight: 176,
@@ -135,10 +139,10 @@ class GoodsDetail extends Component {
           </div>
           <div className="btm_item btm_cart">
             <span className="iconfont icon-gouwuche"></span>
-            <p>购物车</p>
-            <span className="badge">2</span>
+            <p onClick={()=>this.props.history.push("/Cart")}>购物车</p>
+            <span className="badge"  style={{display:this.props.cartLength?"block":"none"}}>{this.props.cartLength}</span>
           </div>
-          <div className="btm_item btm_cart_add">
+          <div className="btm_item btm_cart_add"  onClick={()=>this.props.handleCartAdd(this.state.goodsinfo)}>
             加入购物车
           </div>
           <div className="btm_item btm_buy">
@@ -199,4 +203,21 @@ class GoodsDetail extends Component {
   }
 }
 
-export default GoodsDetail;
+const mapStateToProps = (state) => {
+  return {
+    cartLength:state.cartReducer.cartList.length
+  }
+}
+
+const mapDispatch=(dispatch)=>{
+  return {
+    handleCartAdd:(goodsObj)=>{
+      console.log(goodsObj);
+      // 会触发到  管理员上 
+      dispatch(cart_add(goodsObj));
+        Toast.success('添加成功', 1);     
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatch)(GoodsDetail);

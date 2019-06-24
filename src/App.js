@@ -5,7 +5,6 @@ import Cart from './pages/Cart';
 import Home from './pages/Home';
 import Mine from './pages/Mine';
 import GoodsDetail from './pages/GoodsDetail';
-
 import MyLayout from './components/MyLayout';
 
 import { HashRouter as Router, Route, Link } from "react-router-dom";
